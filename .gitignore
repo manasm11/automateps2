@@ -127,3 +127,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+stations_raw1.data
