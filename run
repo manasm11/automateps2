@@ -1,0 +1,19 @@
+#!/bin/bash
+
+_BIN=venv/bin
+PYTHON=$_BIN/python
+PIP=$_BIN/pip
+ACTIVATE=$_BIN/activate
+
+activate() {
+    cat ~/.bashrc $ACTIVATE > /tmp/._. && bash --rcfile /tmp/._.
+}
+
+
+case $1 in
+    test) $PYTHON -m black *.py **/*.py && $PYTHON -m pytest tests ;;
+    setup) python3 -m venv venv && $PIP install -r requirements.txt ;;
+    env) activate ;;
+    ipython) $_BIN/ipython ;;
+    *) $PYTHON main.py ;;
+esac
