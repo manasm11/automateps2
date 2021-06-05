@@ -26,11 +26,14 @@ class PS2Stations:
     def update_stations_from_stations_list(self):
         rows = self.tree.findall('.//*[@id="prohid"]')
         ids = ['sno', 'lOCATION', 'stationname', 'Industry', 'stipend']
-        self.stations = [Station() for _ in range(len(rows))]
+        self.stations = [Station() for _ in range(len(rows)-1)]
         stations = self.stations
         tree = self.tree
         for id_ in ids:
-            for i,e in enumerate(tree.findall(f'.//*[@id="{id_}"]')):
+            elements = tree.findall(f'.//*[@id="{id_}"]')
+            for i,e in enumerate(elements):
+                if i == len(elements)-1:
+                    continue
                 s = stations[i]
                 t = e.text
                 if id_ == ids[0]:
@@ -69,7 +72,7 @@ class PS2Stations:
 
     def go_to_detail_page(self, station_index):
         i = station_index
-        self.b.click('View')
+        self.b.click(id='viewProj')
         self.b.switch_to_tab(2)
 
     def update_stations_and_projects_from_detail_page(self, station_index):
@@ -95,7 +98,6 @@ class PS2Stations:
         self.b.switch_to_tab(1)
 
     def export_stations_to_pickle_file(self, filename):
-        del self.stations[-1]
         with open(filename, 'wb') as f:
             pickle.dump(self.stations, f)
 
